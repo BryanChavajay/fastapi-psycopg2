@@ -1,0 +1,12 @@
+[project]
+name = "fastapi-pg"
+version = "0.1.0"
+description = "API de prueba para registras gastos"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.115.12",
+    "passlib[bcrypt]>=1.7.4",
+    "psycopg2-binary>=2.9.10",
+    "pyjwt>=2.10.1",
+]
