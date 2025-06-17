@@ -9,7 +9,7 @@ from pydantic import ValidationError
 
 
 from app.esquemas.usuario import UsuarioDB
-from app.esquemas.token import TokenPayload
+from app.esquemas.token import TokenPayload, RefreshTokenPayload
 from app.core.configuraciones import (
     DB_HOST,
     DATA_BASE,
@@ -64,3 +64,15 @@ def obtener_usuario_actual(sesion: DepSesion, token: DepToken) -> UsuarioDB:
 
 
 UsuarioActual = Annotated[UsuarioDB, Depends(obtener_usuario_actual)]
+
+
+def verificar_refresh_token(sesion: DepSesion, refresh_roken: str) -> UsuarioDB | None:
+    try:
+        payload = jwt.decode(refresh_roken, LLAVE_SECRETA, algorithms=[ALGORITMO])
+        token_data = RefreshTokenPayload(**payload)
+    except (InvalidTokenError, ValidationError):
+        return None
+
+    usuario = obtener_usuario_por_codigo(token_data.sub, sesion)
+
+    return usuario

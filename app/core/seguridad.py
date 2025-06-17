@@ -16,7 +16,7 @@ def verificar_contrasenia(hash_contrasenia: str, contrasenia_plana: str) -> bool
     return pwd_contexto.verify(contrasenia_plana, hash_contrasenia)
 
 
-def creat_token_acceso(
+def crear_token_acceso(
     subject: dict | Any, expires_delta: timedelta | None = None
 ) -> str:
     para_encriptar = subject.copy()
