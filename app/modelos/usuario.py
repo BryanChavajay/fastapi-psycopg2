@@ -1,4 +1,5 @@
 from psycopg2.extensions import connection
+from psycopg2.extras import execute_values
 
 from app.esquemas.usuario import UsuarioIngreso, UsuarioIngresoDB, UsuarioDB
 from app.core.utilidades import CATEGORIAS_GASTOS_DEFECTO
@@ -43,18 +44,18 @@ def registrar_usuario(
 
     consulta = """
                 INSERT INTO categorias_gastos(nombre_categoria) VALUES 
-                (%s) RETURNING id_categoria
+                %s RETURNING id_categoria
                 """
-    cursor.executemany(consulta, CATEGORIAS_GASTOS_DEFECTO)
-    cats = cursor.fetchall()
+    execute_values(cursor, consulta, CATEGORIAS_GASTOS_DEFECTO)
+    cats = [row[0] for row in cursor.fetchall()]
 
-    categorias_del_usuario = [(us[0], cat[0]) for cat in cats]
+    categorias_del_usuario = ((us[0], cat) for cat in cats)
     consulta = """
-                INSERT INTO usuarios_categorias (id_usuario, id_categoria) VALUES (%s, %s)
+                INSERT INTO usuarios_categorias (id_usuario, id_categoria) VALUES %s
                 RETURNING id_usuario
                 """
-    cursor.executemany(consulta, categorias_del_usuario)
-    cats_us = cursor.fetchone()
+    execute_values(cursor, consulta, categorias_del_usuario)
+    cats_us = cursor.fetchall()
 
     if cats_us is None:
         cursor.close()
@@ -163,7 +164,7 @@ def autenticar_usuario(
     SELECT id_usuario, codigo_usuario, nombre_usuario, correo_electronico, contrasenia, version_sesion FROM usuarios WHERE correo_electronico=%s OR nombre_usuario=%s
     """
 
-    cursor.execute(consulta, (correo_o_usuario,correo_o_usuario))
+    cursor.execute(consulta, (correo_o_usuario, correo_o_usuario))
 
     usuario = cursor.fetchone()
 

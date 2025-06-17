@@ -16,7 +16,7 @@ from app.esquemas.token import TokenPayload, Token, RefreshTokenPayload
 router = APIRouter(tags=["login"])
 
 
-@router.post("/login/access-token", response_model=Token)
+@router.post("/access-token", response_model=Token)
 def login_token_acceso(
     db: DepSesion,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],

@@ -4,5 +4,5 @@ from app.rutas import login, usuario
 
 api_router = APIRouter()
 
-api_router.include_router(login.router)
-api_router.include_router(usuario.router)
+api_router.include_router(login.router, prefix="/login")
+api_router.include_router(usuario.router, prefix="/usuario")
