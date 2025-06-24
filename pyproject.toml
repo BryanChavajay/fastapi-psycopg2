@@ -9,4 +9,5 @@ dependencies = [
     "passlib[bcrypt]>=1.7.4",
     "psycopg2-binary>=2.9.10",
     "pyjwt>=2.10.1",
+    "tzdata>=2025.2",
 ]
