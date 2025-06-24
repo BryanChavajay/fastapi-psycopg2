@@ -106,8 +106,8 @@ def obtener_por_us_fechas(
 def actualizar(db: connection, gasto: GastoActualizado) -> None | GastoDB:
     cursor = db.cursor()
     consulta = """
-                UPDATE gastos SET id_categoria=%(id_categoria)s descripcion=%(descipcion)s 
-                monto=%(monto)s fecha_gasto=%(fecha_gasto)s
+                UPDATE gastos SET id_categoria=%(id_categoria)s, descripcion=%(descripcion)s, 
+                monto=%(monto)s, fecha_gasto=%(fecha_gasto)s
                 WHERE id_gasto=%(id_gasto)s
                 RETURNING id_gasto, id_categoria, descripcion, monto, fecha_gasto, id_usuario
                 """
@@ -118,6 +118,8 @@ def actualizar(db: connection, gasto: GastoActualizado) -> None | GastoDB:
         cursor.close()
         return None
 
+    cursor.close()
+    db.commit()
     return GastoDB(
         id_gasto=gasto_actualizado[0],
         id_categoria=gasto_actualizado[1],

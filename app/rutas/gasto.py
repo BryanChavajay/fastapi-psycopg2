@@ -79,7 +79,7 @@ def obtener_gasto(
     return datos_gasto
 
 
-@router.put("/", response_model=GastoPublico)
+@router.put("/", response_model=GastoPublicoReducido)
 def actualizar_gasto(
     db: DepSesion, usuario: UsuarioActual, gasto_actualizado: GastoActualizado
 ):

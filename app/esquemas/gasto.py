@@ -2,13 +2,13 @@ from decimal import Decimal
 from datetime import date
 from pydantic import BaseModel, Field
 
-from app.core.fechas import obtener_fecha_hora_actual
+from app.core.fechas import obtener_fecha_actual
 
 
 class GastoBase(BaseModel):
     descripcion: str = Field(max_length=250)
     monto: Decimal = Field(max_digits=18, decimal_places=2)
-    fecha_gasto: date = Field(default_factory=lambda: obtener_fecha_hora_actual())
+    fecha_gasto: date = Field(default_factory=lambda: obtener_fecha_actual())
 
 
 class GastoIngreso(GastoBase):
